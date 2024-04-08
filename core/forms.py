@@ -1,6 +1,18 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import Review
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ('rating', 'comment')
+        widgets = {
+            'rating': forms.RadioSelect(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')]),
+            'comment': forms.Textarea(attrs={'rows': 5}),
+        }
 
 
 PAYMENT_CHOICES = (

@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+	.selection-2 {
+		display: block;
+		width: 100%;
+		height: calc(1.5em + .75rem + 2px);
+		padding: .375rem .75rem;
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: #495057;
+		background-color: #fff;
+		background-clip: padding-box;
+		border: 1px solid #ced4da !important;
+		border-radius: .25rem;
+		transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	}
+</style>
+
+<!-- Title Page -->
+<!-- <section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url(/media/{{ categoryimage }});">
+	<h2 class="l-text2 t-center">
+		{{ category_title }}
+	</h2>
+	<p class="m-text13 t-center">
+		{{ category_description }}
+	</p>
+</section> -->
+
+
+<!-- Content page -->
+<section class="bgwhite p-t-55 p-b-65">
+	<div class="container">
+		<div class="bread-crumb bgwhite flex-w p-l-52 p-r-15 p-t-10 p-b-30 p-l-15-sm">
+			<a href="/" class="s-text16">
+				Home
+				<i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
+			</a>
+
+			<span class="s-text17">
+				{{category.name}}
+			</span>
+		</div>
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+				<div class="leftbar p-r-20 p-r-0-sm">
+					<!--  -->
+
+
+					<h4 class="m-text14 p-b-7">
+						Categories
+					</h4>
+
+					<ul class="list-group dropdown">
+						{% for category in categories %}
+						<li class="list-group-item">
+						  <div class="dropdown">
+							<a class=" dropdown-toggle" href="{% url 'core:category_details' name=category.name %}" id="categoryDropdown{{ category.name }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  {{ category.name }}
+							</a>
+							<div class="dropdown-menu" aria-labelledby="categoryDropdown{{ category.id }}">
+							  {% for subcategory in subcategories %}
+							  {% if subcategory.category.name == category.name %}
+							  <div class="dropdown">
+								<a class="dropdown-item dropdown-toggle" href="{% url 'core:category_details' name=category.name %}" id="subcategoryDropdown{{ subcategory.name }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								  {{ subcategory.name }}
+								</a>
+								<div class="dropdown-menu" aria-labelledby="subcategoryDropdown{{ subcategory.id }}">
+								  {% for product in products %}
+								  <a class="dropdown-item" href="{% url 'core:product_detail' product_id=product.id %}">{{ product.name }}</a>
+								  {% endfor %}
+								</div>
+							  </div>
+							  {% else %}
+							  {% endif %}
+							  {% endfor %}
+							</div>
+						  </div>
+						</li>
+						{% endfor %}
+					  </ul>
+
+					<!-- <ul class="list-group dropdown">
+						{% for category in categories %}
+						<li class="list-group-item">
+							<div class="dropdown">
+								<a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" href="#"
+									id="categoryDropdown{{ category.id }}" role="button" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+									{{ category.name }}
+								</a>
+								<div class="dropdown-menu" >
+									{% for subcategory in subcategories %}
+									 {% if subcategory.category == category.name %}
+									<div class="dropdown-item">
+										<a class="" href="#" id="subcategoryDropdown{{ subcategory.id }}" role="button"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											{{ subcategory.name }}
+										</a>
+									</div>
+									 {% endif %} 
+									{% endfor %}
+								</div>
+							</div>
+						</li>
+						{% endfor %}
+
+					</ul> -->
+
+					<!--  -->
+				</div>
+			</div>
+
+
+			<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
+				<!--  -->
+				<!-- <h1 class="product-detail-name m-text16 p-b-13">{{category.name}}</h1> -->
+				<!-- Product -->
+				<div class="row">
+
+
+
+					{% for product in products %}
+					<div class="col-lg-4 col-md-6 mb-4">
+						<div class="card h-100">
+							<a href="{% url 'core:product_detail' product_id=product.id %}">
+								<img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}">
+							</a>
+							<div class="card-body">
+								<h4 class="card-title">
+									<a href="{% url 'core:product_detail' product_id=product.id %}">
+										{{ product.name}}
+									</a>
+								</h4>
+								<h5>UGX {{ product.price }}</h5>
+								<div class="rating">
+									{% for i in "12345" %}
+									{% if i|add:"-1" < product.rating %} <span class="fa fa-star checked"></span>
+										{% else %}
+										<span class="fa fa-star"></span>
+										{% endif %}
+										{% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			<!-- ---- row end ------- -->
+
+			<br>
+			<!-- Pagination -->
+			{% if is_paginated %}
+			<div class="pagination flex-m flex-w p-t-26">
+				{% if page_obj.has_previous %}
+				<a class="page-link" href="?page={{ page_obj.previous_page_number}}" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+					<span class="sr-only">Previous</span>
+				</a>
+				{% endif %}
+				<a href="?page={{ page_obj.number }}"
+					class="item-pagination flex-c-m trans-0-4 active-pagination">{{page_obj.number}}</a>
+
+
+				{% if page_obj.has_next %}
+				<a class="page-link" href="?page={{ page_obj.next_page_number}}" aria-label="Next">
+					<span aria-hidden="true">&raquo;</span>
+					<span class="sr-only">Next</span>
+				</a>
+				{% endif %}
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+
+{% endblock content %}
+
+<!-- {% for product in products %}
+									{% if product.subcategory == subcategory.name %}
+										<a class="dropdown-item" href="{% url 'core:product_detail' product_id=product.id %}">
+											{{ product.name }}
+										</a>
+									{% else %}
+										<p></p>
+									{% endif %}
+								{% endfor %} -->

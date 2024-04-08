@@ -9,5 +9,6 @@
   "python.linting.pycodestyleArgs": ["--ignore=E501"],
   "files.exclude": {
     "**/*.pyc": true
-  }
+  },
+  "python.linting.enabled": false
 }
