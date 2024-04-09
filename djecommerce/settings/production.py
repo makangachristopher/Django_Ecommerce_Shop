@@ -1,7 +1,8 @@
 from .base import *
+import dj_database_url
 
 DEBUG = config('DEBUG', cast=bool)
-ALLOWED_HOSTS = ['ip-address', 'https://django-ecommerce-shop-1.onrender.com']
+ALLOWED_HOSTS = ['ip-address', 'https://django-ecommerce-shop.onrender.com']
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
