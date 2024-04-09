@@ -1,8 +1,7 @@
 from .base import *
-import dj_database_url
 
 DEBUG = config('DEBUG', cast=bool)
-ALLOWED_HOSTS = ['ip-address', 'https://django-ecommerce-shop.onrender.com']
+ALLOWED_HOSTS = ['ip-address', 'www.your-website.com']
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -14,11 +13,11 @@ AUTH_PASSWORD_VALIDATORS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('seeds_j7uu'),
-        'USER': config('seeds_j7uu_user'),
-        'PASSWORD': config('19nBFOlYoK1t6fHaaqm8KQIWyjA0J9j7'),
-        'HOST': config('dpg-coad35n79t8c73eg1m00-a'),
-        'PORT': '5432'
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': ''
     }
 }
 
