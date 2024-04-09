@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+  <div class="container">
+
+
+    <!-- carousel -->
+
+    <style>
+      .slider {
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 40px;
+      }
+
+      .carousel-item {
+        height: 100%;
+      }
+
+      .carousel-item img {
+        object-fit: cover;
+        height: 100%;
+      }
+
+      .carousel-caption {
+        font-family: montserrat;
+      }
+
+      .carousel-caption h1 {
+        font-weight: 900;
+        font-size: 6.0rem;
+      }
+
+      .carousel-caption h2 {
+        font-weight: 400;
+        font-size: 3.0rem;
+      }
+
+      #categories {
+        padding: 30px;
+      }
+
+      .aboutus{
+        text-align: center;
+        background-color: #517A53;
+        color: white;
+        padding: 50px;
+        margin-bottom: 30px;
+
+      }
+
+      .aboutus h2{
+        
+        font-weight: bold;
+        font-size: 2.0rem;
+      }
+
+      .aboutus p{
+        font-size: medium;
+      }
+    </style>
+
+
+    <section class="slider">
+      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+          <li data-target="#myCarousel" data-slide-to="1"></li>
+          <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Slides -->
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://farmsolutionsafrica.com/wp-content/uploads/2021/09/slider-2.jpg" class="d-block w-100"
+              alt="Slide 1">
+            <div class="carousel-caption">
+              <h2>The seeds of your future are here.</h2>
+              <h1>Dreams Grow</h1>
+              <a href="#" class="btn btn-primary">Shop now</a>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="https://farmsolutionsafrica.com/wp-content/uploads/2021/09/slider-2.jpg" class="d-block w-100"
+              alt="Slide 2">
+            <div class="carousel-caption">
+              <h2>The seeds of your future are here.</h2>
+              <h1>Dreams Grow</h1>
+              <a href="#" class="btn btn-primary">Shop now</a>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="https://farmsolutionsafrica.com/wp-content/uploads/2021/09/slider-2.jpg" class="d-block w-100"
+              alt="Slide 3">
+            <div class="carousel-caption">
+              <h2>The seeds of your future are here.</h2>
+              <h1>Dreams Grow</h1>
+              <a href="#" class="btn btn-primary">Shop now</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- end carousel -->
+
+
+
+    <!-- favorites -->
+    <div class="row wow fadeIn">
+      <h2>Favorites</h2>
+      <div class="row">
+        {% for product in favorite_products %}
+
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="card h-100">
+            <a href="{% url 'core:product_detail' product_id=product.id %}">
+              <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}">
+            </a>
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="{% url 'core:product_detail' product_id=product.id %}">{{ product.name }}</a>
+              </h4>
+              <h5>UGX {{ product.price }}</h5>
+              <div class="rating">
+                {% for i in "12345" %}
+                {% if i|add:"-1" < product.rating %} <span class="fa fa-star checked"></span>
+                  {% else %}
+                  <span class="fa fa-star"></span>
+                  {% endif %}
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+
+    <!--  -->
+
+
+    <!-- about us -->
+
+    <section class = "aboutus">
+
+<h2 style="float: center;">About Us</h2>
+
+<p style="float: center;">FSA is a specialist in Agricultural Research, consultancy, vegetable seeds, herbs, agrochemicals
+   and market development. With Headquarters in Kampala, Uganda- East Africa, it is one of the leading 
+   private agricultural research companies in East Africa and a national supplier of premium varieties 
+   of vegetable seeds, herbs, field crop seed varieties and crop protection solutions to the professional 
+   and non professional growers. It focuses strongly on after-sales service, assisting farmers to successfully 
+   grow products that meet international standards. Farm Solutions Africa uses a network of in-house sales 
+   representatives as well as external agents from all over the Region. 
+   This distribution network has been a key to our international success. FSA ensures that the product reaches 
+   the grower in the best possible condition for crop success.</p>
+
+  </section>
+    <!--  -->
+
+
+    <!-- categories -->
+    
+    {% for category in categories %}
+    <div class="row wow fadeIn">
+      <div style="width: 100%;">
+        <span style="float: left;"><h1>{{category.name}}</h1></span>
+        <span style="float: right;"><a href="{% url 'core:category_details' name=category.name %}"> <h3>more...</h3></a></span>
+      </div>
+
+      <div class="row">
+        {% for product in product_list %}
+        {% if product.category.name == category.name %}
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="card h-100">
+            <a href="{% url 'core:product_detail' product_id=product.id %}">
+              <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}">
+            </a>
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="{% url 'core:product_detail' product_id=product.id %}">{{ product.name }}</a>
+              </h4>
+              <h5>UGX {{ product.price }}</h5>
+              <div class="rating">
+                {% for i in "12345" %}
+                {% if i|add:"-1" < product.rating %} <span class="fa fa-star checked"></span>
+                  {% else %}
+                  <span class="fa fa-star"></span>
+                  {% endif %}
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+
+    <!--  -->
+
+
+
+
+
+
+    <!-- Cateories -->
+    <section class="container" id="categories">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="mb-4">Our Categories</h2>
+          <hr class="mb-4">
+        </div>
+      </div>
+      <div class="row">
+        {% for category in categories %}
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <p class="card-title"><a href="{{ category.url }}">{{ category.name }}</a></p>
+              <span class="card-text">{{ category.count }}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!--  -->
+
+    <!--Pagination-->
+
+    {% if is_paginated %}
+    <nav class="d-flex justify-content-center wow fadeIn">
+      <ul class="pagination pg-blue">
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+          <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+  </div>
+</main>
+
+{% endblock content %}
+
+
+
+<!--Section: Products v.3-->
+<!-- <section class="text-center mb-4">
+  <div class="row wow fadeIn">
+    <div class="row">
+      {% for product in product_list %}
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+          <a href="{% url 'core:product_detail' product_id=product.id %}">
+            <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}">
+          </a>
+          <div class="card-body">
+            <h4 class="card-title">
+              <a href="{% url 'core:product_detail' product_id=product.id %}">{{ product.name }}</a>
+            </h4>
+            <h5>UGX {{ product.price }}</h5>
+            <div class="rating">
+              {% for i in "12345" %}
+              {% if i|add:"-1" < product.rating %} <span class="fa fa-star checked"></span>
+                {% else %}
+                <span class="fa fa-star"></span>
+                {% endif %}
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section> -->
+<!--Section: Products v.3-->
