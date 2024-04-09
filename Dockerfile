@@ -17,4 +17,4 @@ RUN pip install -r requirements.txt
 # Copy the current directory contents into the container at /code/
 COPY . /code/
 
-ENTRYPOINT [ "gunicorn", "core.wsgi"]
+CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8000"]
